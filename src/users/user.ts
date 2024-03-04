@@ -7,13 +7,27 @@ export type SendMessageBody = {
   destinationUserId: number;
 };
 
+let getLastReceivedMessage: string | null = null;
+let getLastSentMessage: string | null = null;
 export async function user(userId: number) {
   const _user = express();
   _user.use(express.json());
   _user.use(bodyParser.json());
 
+  _user.get("/getLastReceivedMessage",  (req, res) => {
+    res.json({ result: getLastReceivedMessage });
+  });
+
+  _user.get("/getLastSentMessage", (req, res) => {
+    res.json({ result: getLastSentMessage });
+  });
+
+
   // TODO implement the status route
-  // _user.get("/status", (req, res) => {});
+   _user.get("/status", (req, res) => {
+     res.send("live");
+   });
+
 
   const server = _user.listen(BASE_USER_PORT + userId, () => {
     console.log(
